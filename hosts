@@ -1,0 +1,11 @@
+[servers]
+jplborges.pt
+
+[docker]
+jplborges.pt
+
+[nginx]
+jplborges.pt
+
+[focalboard]
+jplborges.pt

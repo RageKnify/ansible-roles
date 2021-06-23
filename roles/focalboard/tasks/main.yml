@@ -1,0 +1,27 @@
+# play for focalboard role
+
+- name: Ensure host is part of nginx and docker
+  ansible.builtin.assert:
+    that:
+      - docker
+      - nginx
+    msg: "'focalboard' requires 'docker' and 'nginx'"
+
+- name: Create focalboard directories
+  ansible.builtin.file:
+    path: /home/{{ ansible_user }}/focalboard
+    state: directory
+    mode: '0755'
+
+- name: Start focalboard container
+  community.docker.docker_container:
+    image: mattermost/focalboard:latest
+    name: focalboard
+    volumes:
+      - /home{{ ansible_user }}/focalboard/:/data
+    networks:
+      - name: "{{ proxy_net }}"
+    env:
+      VIRTUAL_HOST: "focalboard.{{ common_name }}"
+      LETSENCRYPT_HOST: "focalboard.{{ common_name }}"
+  become: yes

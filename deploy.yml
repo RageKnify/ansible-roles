@@ -1,0 +1,14 @@
+- hosts: docker
+  become_method: sudo
+  roles:
+    - docker
+
+- hosts: nginx
+  become_method: sudo
+  roles:
+    - nginx
+
+- hosts: focalboard
+  become_method: sudo
+  roles:
+    - focalboard

@@ -1,0 +1,11 @@
+---
+- name: Update packages
+  hosts: servers
+  become_method: sudo
+
+  tasks:
+    - name: Update packages
+      ansible.builtin.package:
+        name: "*"
+        state: latest
+      become: yes
