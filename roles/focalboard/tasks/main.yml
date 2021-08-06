@@ -1,27 +1,51 @@
 # play for focalboard role
 
-- name: Ensure host is part of nginx and docker
+- name: Ensure host is part of caddy and docker
   ansible.builtin.assert:
     that:
       - docker
-      - nginx
-    msg: "'focalboard' requires 'docker' and 'nginx'"
+      - caddy
+    msg: "'focalboard' requires 'docker' and 'caddy'"
+  tags:
+    - always
 
 - name: Create focalboard directories
   ansible.builtin.file:
-    path: /home/{{ ansible_user }}/focalboard
+    path: /home/{{ ansible_user }}/focalboard/data
     state: directory
-    mode: '0755'
+  tags:
+    - setup
+
+- name: Download focalboard server_config.json
+  ansible.builtin.get_url:
+    url: https://raw.githubusercontent.com/mattermost/focalboard/main/docker/server_config.json
+    dest: /home/{{ ansible_user }}/focalboard/server_config.json
+  tags:
+    - setup
 
 - name: Start focalboard container
   community.docker.docker_container:
     image: mattermost/focalboard:latest
     name: focalboard
     volumes:
-      - /home{{ ansible_user }}/focalboard/:/data
+      - /home/{{ ansible_user }}/focalboard/server_config.json/:/opt/focalboard/config.json:ro,Z
+      - /home/{{ ansible_user }}/focalboard/data/:/data/
+    network_mode: bridge
     networks:
       - name: "{{ proxy_net }}"
-    env:
-      VIRTUAL_HOST: "focalboard.{{ common_name }}"
-      LETSENCRYPT_HOST: "focalboard.{{ common_name }}"
+    security_opts:
+      - "label=disable"
   become: yes
+  tags:
+    - run
+
+- name: Copy focalboard Caddyfile
+  ansible.builtin.template:
+    src: focalboard-caddyfile.j2
+    dest: /home/{{ ansible_user }}/caddy/conf.d/focalboard.caddyfile
+    owner: "root"
+  become: yes
+  tags:
+    - setup
+  notify:
+    caddy reload

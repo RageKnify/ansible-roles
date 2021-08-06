@@ -1,0 +1,69 @@
+# play for caddy role
+
+- name: Ensure host is part of docker
+  ansible.builtin.assert:
+    that:
+      - docker
+    msg: "'caddy' requires 'docker'"
+  tags:
+    - always
+
+- name: Create caddy directories
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/caddy/{{ item }}"
+    state: directory
+    mode: '0755'
+    owner: "root"
+  become: yes
+  loop:
+    - data
+    - config
+    - conf.d
+  tags:
+    - setup
+
+- name: Create network for proxying
+  community.docker.docker_network:
+    name: "{{ proxy_net }}"
+    # enable_ipv6: yes
+    driver_options:
+      com.docker.network.bridge.name: "{{ proxy_net }}"
+  become: yes
+  tags:
+    - setup
+
+- name: Copy Caddyfile
+  ansible.builtin.template:
+    src: Caddyfile.j2
+    dest: /home/{{ ansible_user }}/caddy/Caddyfile
+    owner: "root"
+  become: yes
+  tags:
+    - setup
+
+- name: Start caddy container
+  community.docker.docker_container:
+    image: "caddy:alpine"
+    name: "caddy"
+    ports:
+      - 80:80
+      - "[::]:80:80"
+      - 443:443
+      - "[::]:443:443"
+      # For matrix federation
+      - 8448:8448
+      - "[::]:8448:8448"
+    volumes:
+      - "/home/{{ ansible_user }}/caddy/Caddyfile:/etc/caddy/Caddyfile"
+      - "/home/{{ ansible_user }}/caddy/data:/data"
+      - "/home/{{ ansible_user }}/caddy/config:/config"
+      - "/home/{{ ansible_user }}/caddy/conf.d:/srv/conf.d"
+    restart_policy: "always"
+    network_mode: bridge
+    networks:
+      - name: "{{ proxy_net }}"
+    security_opts:
+      - "label=disable"
+  become: yes
+  tags:
+    - run

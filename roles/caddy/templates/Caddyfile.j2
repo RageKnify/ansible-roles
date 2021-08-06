@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+
+{{ common_name }} {
+	root * /usr/share/caddy
+
+	file_server
+}
+
+import /srv/conf.d/*
