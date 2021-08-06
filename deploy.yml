@@ -3,10 +3,10 @@
   roles:
     - docker
 
-- hosts: nginx
+- hosts: caddy
   become_method: sudo
   roles:
-    - nginx
+    - caddy
 
 - hosts: focalboard
   become_method: sudo

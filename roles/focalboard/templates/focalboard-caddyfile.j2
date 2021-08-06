@@ -1,0 +1,5 @@
+# {{ ansible_managed }}
+
+focalboard.{{ common_name }} {
+	reverse_proxy focalboard:{{ focalboard_port }}
+}
