@@ -12,3 +12,15 @@
   become_method: sudo
   roles:
     - focalboard
+
+- hosts: bot
+  become_method: sudo
+  vars_prompt:
+    - name: registry_password
+      prompt: "registry login token"
+      private: yes
+    - name: discord_token
+      prompt: "discord bot token"
+      private: yes
+  roles:
+    - bot
