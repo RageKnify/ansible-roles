@@ -1,0 +1,7 @@
+bot_name: rickbot
+image_name: ghcr.io/rickvieira21/rickbot
+image_tag: latest
+registry_url: ghcr.io
+registry_user: RageKnify
+ssh_key: ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHWuGFsTGnxzqePs4m2dGnaWrI5tkqflnNl7WCCDwVed rickbot@github
+script_path: "/home/{{ bot_name }}/{{bot_name}}.sh"

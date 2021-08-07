@@ -1,0 +1,46 @@
+# play for bot role
+
+- name: Ensure host is part of docker
+  ansible.builtin.assert:
+    that:
+      - docker
+    msg: "'bot' requires 'docker'"
+  tags:
+    - always
+
+- name: Create bot account
+  ansible.builtin.user:
+    name: "{{ bot_name }}"
+    group: docker
+  become: yes
+  tags:
+    - setup
+
+- name: Setup registry access
+  community.docker.docker_login:
+    registry_url: "{{ registry_url }}"
+    username: "{{ registry_user }}"
+    password: "{{ registry_password }}"
+  become: yes
+  become_user: "{{ bot_name }}"
+  tags:
+    - setup
+
+- name: Copy bot update script
+  ansible.builtin.template:
+    src: bot-update.sh.j2
+    dest: "{{ script_path }}"
+    owner: "rickbot"
+    mode: "0744"
+  become: yes
+  tags:
+    - setup
+
+- name: Copy ssh key
+  ansible.posix.authorized_key:
+    key: "{{ ssh_key }}"
+    user: "{{ bot_name }}"
+    key_options: 'command="{{ script_path }}"'
+  become: yes
+  tags:
+    - setup
