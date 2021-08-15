@@ -25,7 +25,7 @@
 
 - name: Start focalboard container
   community.docker.docker_container:
-    image: mattermost/focalboard:latest
+    image: mattermost/focalboard:0.8.2
     name: focalboard
     volumes:
       - /home/{{ ansible_user }}/focalboard/server_config.json/:/opt/focalboard/config.json:ro,Z
