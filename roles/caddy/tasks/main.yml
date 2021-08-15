@@ -13,12 +13,18 @@
     path: "/home/{{ ansible_user }}/caddy/{{ item }}"
     state: directory
     mode: '0755'
-    owner: "root"
-  become: yes
   loop:
     - data
-    - config
-    - conf.d
+    - config/conf.d
+    - config/logs
+  tags:
+    - setup
+
+- name: Create caddy log file
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/caddy/config/logs/access.log"
+    state: file
+    mode: '0644'
   tags:
     - setup
 
@@ -35,35 +41,34 @@
 - name: Copy Caddyfile
   ansible.builtin.template:
     src: Caddyfile.j2
-    dest: /home/{{ ansible_user }}/caddy/Caddyfile
-    owner: "root"
+    dest: "/home/{{ ansible_user }}/caddy/config/Caddyfile"
   become: yes
   tags:
     - setup
 
 - name: Start caddy container
   community.docker.docker_container:
-    image: "caddy:alpine"
+    image: "ghcr.io/hotio/caddy:release-2.4.3"
     name: "caddy"
     ports:
       - 80:80
       - "[::]:80:80"
       - 443:443
       - "[::]:443:443"
-      # For matrix federation
-      - 8448:8448
-      - "[::]:8448:8448"
     volumes:
-      - "/home/{{ ansible_user }}/caddy/Caddyfile:/etc/caddy/Caddyfile"
       - "/home/{{ ansible_user }}/caddy/data:/data"
       - "/home/{{ ansible_user }}/caddy/config:/config"
-      - "/home/{{ ansible_user }}/caddy/conf.d:/srv/conf.d"
+    env:
+      XDG_CONFIG_HOME: /config
+      XDG_DATA_HOME: /data
     restart_policy: "always"
     network_mode: bridge
     networks:
       - name: "{{ proxy_net }}"
     security_opts:
       - "label=disable"
+    capabilities:
+      - NET_ADMIN
   become: yes
   tags:
     - run
