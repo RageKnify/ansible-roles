@@ -1,0 +1,43 @@
+# play for portainer role
+
+- name: Ensure host is part of caddy and docker
+  ansible.builtin.assert:
+    that:
+      - docker
+      - caddy
+    msg: "'portainer' requires 'docker' and 'caddy'"
+  tags:
+    - always
+
+- name: Create portainer directories
+  ansible.builtin.file:
+    path: /home/{{ ansible_user }}/portainer/data
+    state: directory
+  tags:
+    - setup
+
+- name: Start portainer container
+  community.docker.docker_container:
+    image: portainer/portainer-ce:2.6.2
+    name: portainer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/{{ ansible_user }}/portainer/data/:/data/
+    network_mode: bridge
+    networks:
+      - name: "{{ proxy_net }}"
+    privileged: yes
+    security_opts:
+      - "label=disable"
+  become: yes
+  tags:
+    - run
+
+- name: Copy portainer Caddyfile
+  ansible.builtin.template:
+    src: portainer-caddyfile.j2
+    dest: /home/{{ ansible_user }}/caddy/config/conf.d/portainer.caddyfile
+  tags:
+    - setup
+  notify:
+    caddy reload

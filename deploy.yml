@@ -13,6 +13,11 @@
   roles:
     - focalboard
 
+- hosts: portainer
+  become_method: sudo
+  roles:
+    - portainer
+
 - hosts: bot
   become_method: sudo
   vars_prompt:
