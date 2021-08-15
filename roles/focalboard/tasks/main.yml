@@ -42,9 +42,7 @@
 - name: Copy focalboard Caddyfile
   ansible.builtin.template:
     src: focalboard-caddyfile.j2
-    dest: /home/{{ ansible_user }}/caddy/conf.d/focalboard.caddyfile
-    owner: "root"
-  become: yes
+    dest: /home/{{ ansible_user }}/caddy/config/conf.d/focalboard.caddyfile
   tags:
     - setup
   notify:
