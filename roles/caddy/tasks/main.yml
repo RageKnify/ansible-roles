@@ -17,6 +17,7 @@
     - data
     - config/conf.d
     - config/logs
+    - static
   tags:
     - setup
 
@@ -58,6 +59,7 @@
     volumes:
       - "/home/{{ ansible_user }}/caddy/data:/data"
       - "/home/{{ ansible_user }}/caddy/config:/config"
+      - "/home/{{ ansible_user }}/caddy/static:/static"
     env:
       XDG_CONFIG_HOME: /config
       XDG_DATA_HOME: /data
