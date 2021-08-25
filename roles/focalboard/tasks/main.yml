@@ -47,3 +47,5 @@
     - setup
   notify:
     caddy reload
+
+- import_tasks: backups.yml

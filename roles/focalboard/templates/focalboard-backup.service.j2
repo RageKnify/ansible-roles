@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=Focalboard backup service
+
+[Service]
+ExecStart=/home/{{ ansible_user }}/focalboard/focalboard-backup.sh

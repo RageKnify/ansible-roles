@@ -1,0 +1,15 @@
+#!/bin/sh
+# {{ ansible_managed }}
+
+NAME_END="-focalboard.tar.gz"
+WEEK_OLD_FILE="/home/{{ ansible_user }}/focalboard/$(date --iso-8601 -d '-1 week')$NAME_END"
+
+# create today's archive
+tar -czf \
+	/home/{{ ansible_user }}/focalboard/$(date --iso-8601)$NAME_END \
+	/home/{{ ansible_user }}/focalboard/data/
+
+# Remove the week old file
+if [ -f "$WEEK_OLD_FILE" ]; then
+	rm $WEEK_OLD_FILE
+fi
