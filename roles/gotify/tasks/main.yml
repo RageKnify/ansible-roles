@@ -1,0 +1,51 @@
+# play for gotify role
+
+- name: Ensure host is part of docker and caddy
+  ansible.builtin.assert:
+    that:
+      - docker
+      - caddy
+    msg: "'gotify' requires 'docker' and 'caddy'"
+  tags:
+    - always
+
+- name: Create gotify directories
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/gotify/data/{{ item }}"
+    state: directory
+  loop:
+    - images
+    - plugins
+  tags:
+    - setup
+
+- name: Start gotify container
+  community.docker.docker_container:
+    image: gotify/server:2.0.23
+    name: gotify
+    user: 1000:1000
+    volumes:
+      - /home/{{ ansible_user }}/gotify/data/:/app/data/
+    env:
+      GOTIFY_SERVER_PORT: "{{ gotify_port }}"
+      GOTIFY_DATABASE_DIALECT: sqlite3
+      GOTIFY_DATABASE_CONNECTION: /app/data/gotify.db
+      GOTIFY_UPLOADEDIMAGESDIR: /app/data/images/
+      GOTIFY_PLUGINSDIR: /app/data/plugins/
+    network_mode: bridge
+    networks:
+      - name: "{{ proxy_net }}"
+    security_opts:
+      - "label=disable"
+  become: yes
+  tags:
+    - run
+
+- name: Copy gotify Caddyfile
+  ansible.builtin.template:
+    src: gotify.caddyfile.j2
+    dest: /home/{{ ansible_user }}/caddy/config/conf.d/gotify.caddyfile
+  tags:
+    - setup
+  notify:
+    caddy reload

@@ -1,0 +1,5 @@
+# {{ ansible_managed }}
+
+gotify.{{ common_name }} {
+	reverse_proxy gotify:{{ gotify_port }}
+}

@@ -18,6 +18,11 @@
   roles:
     - portainer
 
+- hosts: gotify
+  become_method: sudo
+  roles:
+    - gotify
+
 - hosts: bot
   become_method: sudo
   vars_prompt:
