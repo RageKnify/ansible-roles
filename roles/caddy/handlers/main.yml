@@ -1,4 +1,4 @@
 - name: caddy reload
   community.docker.docker_container_exec:
     container: caddy
-    command: "caddy reload --config /home/{{ ansible_user }}/caddy/config/Caddyfile"
+    command: "caddy reload --config /config/Caddyfile"
