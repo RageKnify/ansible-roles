@@ -21,7 +21,7 @@
 
 - name: Start gotify container
   community.docker.docker_container:
-    image: gotify/server:2.0.23
+    image: gotify/server:2.1.0
     name: gotify
     restart_policy: unless-stopped
     user: 1000:1000

@@ -18,7 +18,7 @@
 
 - name: Start portainer container
   community.docker.docker_container:
-    image: portainer/portainer-ce:2.6.2
+    image: portainer/portainer-ce:2.9.0
     name: portainer
     restart_policy: unless-stopped
     volumes:
