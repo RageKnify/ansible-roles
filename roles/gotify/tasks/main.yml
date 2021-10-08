@@ -23,6 +23,7 @@
   community.docker.docker_container:
     image: gotify/server:2.0.23
     name: gotify
+    restart_policy: unless-stopped
     user: 1000:1000
     volumes:
       - /home/{{ ansible_user }}/gotify/data/:/app/data/

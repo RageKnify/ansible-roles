@@ -51,6 +51,7 @@
   community.docker.docker_container:
     image: "ghcr.io/hotio/caddy:release-2.4.3"
     name: "caddy"
+    restart_policy: unless-stopped
     ports:
       - 80:80
       - "[::]:80:80"
@@ -63,7 +64,6 @@
     env:
       XDG_CONFIG_HOME: /config
       XDG_DATA_HOME: /data
-    restart_policy: "always"
     network_mode: bridge
     networks:
       - name: "{{ proxy_net }}"

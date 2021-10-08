@@ -6,7 +6,7 @@
 	if docker ps -a --format {{ "'{{.Names}}'" }} | grep -Eq "^{{ bot_name }}\$"; then
 		docker stop {{ bot_name }} && docker rm {{ bot_name }}
 	fi && \
-	(docker run --name {{ bot_name }} --env DISCORD_TOKEN="{{discord_token}}" \
+	(docker run --restart unless-stopped --name {{ bot_name }} --env DISCORD_TOKEN="{{discord_token}}" \
 		-d {{ image_name }}:{{ image_tag }}) && \
 	docker image prune -f ) || \
 	echo "Failed to update container {{ bot_name }}" >> /home/{{ ansible_user }}/.logs.txt

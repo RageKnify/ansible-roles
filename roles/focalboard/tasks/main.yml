@@ -27,6 +27,7 @@
   community.docker.docker_container:
     image: mattermost/focalboard:0.8.2
     name: focalboard
+    restart_policy: unless-stopped
     volumes:
       - /home/{{ ansible_user }}/focalboard/server_config.json/:/opt/focalboard/config.json:ro,Z
       - /home/{{ ansible_user }}/focalboard/data/:/data/
