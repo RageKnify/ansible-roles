@@ -1,0 +1,46 @@
+# play for diun role
+
+- name: Ensure host is part of docker and caddy
+  ansible.builtin.assert:
+    that:
+      - docker
+    msg: "'diun' requires 'docker' and 'caddy'"
+  tags:
+    - always
+
+- name: Create diun directories
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/diun/data"
+    state: directory
+  tags:
+    - setup
+
+- name: Start diun container
+  community.docker.docker_container:
+    image: "ghcr.io/crazy-max/diun:4"
+    name: diun
+    restart_policy: unless-stopped
+    # user: 1000:1000
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/{{ ansible_user }}/diun/data/:/data/
+    env:
+      TZ: "Europe/Lisbon"
+      LOG_LEVEL: "info"
+      LOG_JSON: "false"
+      DIUN_WATCH_WORKERS: "4"
+      DIUN_WATCH_SCHEDULE: "0 */6 * * *"
+      DIUN_PROVIDERS_DOCKER: "true"
+      DIUN_PROVIDERS_DOCKER_WATCHBYDEFAULT: "true"
+      DIUN_NOTIF_GOTIFY_ENDPOINT: "{{ gotify_endpoint }}"
+      DIUN_NOTIF_GOTIFY_TOKEN: "{{ gotify_token }}"
+      DIUN_NOTIF_GOTIFY_PRIORITY: "{{ gotify_priority }}"
+    network_mode: bridge
+    networks:
+      - name: "{{ proxy_net }}"
+    privileged: yes
+    security_opts:
+      - "label=disable"
+  become: yes
+  tags:
+    - run

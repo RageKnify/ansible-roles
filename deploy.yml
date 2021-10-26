@@ -23,6 +23,11 @@
   roles:
     - gotify
 
+- hosts: diun
+  become_method: sudo
+  roles:
+    - diun
+
 - hosts: bot
   become_method: sudo
   vars_prompt:
