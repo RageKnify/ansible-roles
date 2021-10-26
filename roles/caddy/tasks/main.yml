@@ -49,7 +49,7 @@
 
 - name: Start caddy container
   community.docker.docker_container:
-    image: "ghcr.io/hotio/caddy:release-2.4.5"
+    image: "ghcr.io/hotio/caddy:release"
     name: "caddy"
     restart_policy: unless-stopped
     ports:
