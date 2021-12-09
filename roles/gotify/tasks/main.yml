@@ -38,6 +38,7 @@
       - name: "{{ proxy_net }}"
     security_opts:
       - "label=disable"
+    pull: yes
   become: yes
   tags:
     - run

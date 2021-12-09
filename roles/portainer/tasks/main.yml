@@ -30,6 +30,7 @@
     privileged: yes
     security_opts:
       - "label=disable"
+    pull: yes
   become: yes
   tags:
     - run

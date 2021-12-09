@@ -71,6 +71,7 @@
       - "label=disable"
     capabilities:
       - NET_ADMIN
+    pull: yes
   become: yes
   tags:
     - run
