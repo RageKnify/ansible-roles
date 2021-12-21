@@ -1,0 +1,5 @@
+# {{ ansible_managed }}
+
+wallabag.{{ common_name }} {
+	reverse_proxy wallabag:{{ wallabag_port }}
+}

@@ -28,6 +28,11 @@
   roles:
     - diun
 
+- hosts: wallabag
+  become_method: sudo
+  roles:
+    - wallabag
+
 - hosts: bot
   become_method: sudo
   vars_prompt:

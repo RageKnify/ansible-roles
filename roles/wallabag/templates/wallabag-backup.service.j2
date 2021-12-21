@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=Wallabag backup service
+
+[Service]
+ExecStart=/home/{{ ansible_user }}/wallabag/wallabag-backup.sh

@@ -1,0 +1,52 @@
+# play for wallabag role
+
+- name: Ensure host is part of caddy and docker
+  ansible.builtin.assert:
+    that:
+      - docker
+      - caddy
+    msg: "'wallabag' requires 'docker' and 'caddy'"
+  tags:
+    - always
+
+- name: Create wallabag directories
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/wallabag/{{ item }}"
+    state: directory
+  loop:
+    - data
+    - images
+  tags:
+    - setup
+
+- name: Start wallabag container
+  community.docker.docker_container:
+    image: wallabag/wallabag:latest
+    name: wallabag
+    restart_policy: unless-stopped
+    volumes:
+      - /home/{{ ansible_user }}/wallabag/data/:/var/www/wallabag/data
+      - /home/{{ ansible_user }}/wallabag/images/:/var/www/wallabag/web/assets/images
+    env:
+      SYMFONY__ENV__FOSUSER_REGISTRATION: "false"
+      SYMFONY__ENV__DOMAIN_NAME: "https://wallabag.{{ common_name }}"
+    network_mode: bridge
+    networks:
+      - name: "{{ proxy_net }}"
+    security_opts:
+      - "label=disable"
+    pull: yes
+  become: yes
+  tags:
+    - run
+
+- name: Copy wallabag Caddyfile
+  ansible.builtin.template:
+    src: wallabag-caddyfile.j2
+    dest: /home/{{ ansible_user }}/caddy/config/conf.d/wallabag.caddyfile
+  tags:
+    - setup
+  notify:
+    caddy reload
+
+- import_tasks: backups.yml
