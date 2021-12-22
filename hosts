@@ -1,26 +1,29 @@
 [servers]
-jplborges.pt
+headless
 
 [docker]
-jplborges.pt
+headless
 
 [caddy]
-jplborges.pt
+headless
 
 [focalboard]
-jplborges.pt
+headless
 
 [portainer]
-jplborges.pt
+headless
 
 [gotify]
-jplborges.pt
+headless
 
 [diun]
-jplborges.pt
+headless
 
 [wallabag]
-jplborges.pt
+headless
 
 [bot]
-jplborges.pt
+headless
+
+[conduit]
+headless
