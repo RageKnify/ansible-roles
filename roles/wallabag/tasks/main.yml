@@ -45,7 +45,7 @@
     src: wallabag-caddyfile.j2
     dest: /home/{{ ansible_user }}/caddy/config/conf.d/wallabag.caddyfile
   tags:
-    - setup
+    - run
   notify:
     caddy reload
 
