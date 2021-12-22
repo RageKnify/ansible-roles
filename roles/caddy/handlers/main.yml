@@ -2,3 +2,4 @@
   community.docker.docker_container_exec:
     container: caddy
     command: "caddy reload --config /config/Caddyfile"
+  become: yes

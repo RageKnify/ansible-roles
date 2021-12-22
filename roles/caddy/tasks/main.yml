@@ -21,10 +21,11 @@
   tags:
     - setup
 
-- name: Create caddy log file
-  ansible.builtin.file:
-    path: "/home/{{ ansible_user }}/caddy/config/logs/access.log"
-    state: file
+- name: Ensure caddy log file exists
+  ansible.builtin.copy:
+    content: ""
+    dest: "/home/{{ ansible_user }}/caddy/config/logs/access.log"
+    force: no
     mode: '0644'
   tags:
     - setup
