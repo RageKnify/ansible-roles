@@ -13,6 +13,9 @@
   ansible.builtin.file:
     path: /home/{{ ansible_user }}/focalboard/data
     state: directory
+    owner: nobody
+    group: nobody
+  become: yes
   tags:
     - setup
 
