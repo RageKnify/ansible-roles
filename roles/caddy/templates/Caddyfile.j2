@@ -1,5 +1,11 @@
 # {{ ansible_managed }}
 
+{
+	storage file_system {
+		root "/data/"
+	}
+}
+
 {{ common_name }} {
 	root * /static
 
