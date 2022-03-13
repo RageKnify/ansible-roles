@@ -28,7 +28,7 @@
 
 - name: Start focalboard container
   community.docker.docker_container:
-    image: mattermost/focalboard:0.12.1
+    image: mattermost/focalboard:0.15.0
     name: focalboard
     restart_policy: unless-stopped
     volumes:
