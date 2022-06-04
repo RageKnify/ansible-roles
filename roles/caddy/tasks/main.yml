@@ -16,17 +16,7 @@
   loop:
     - data
     - config/conf.d
-    - config/logs
     - static
-  tags:
-    - setup
-
-- name: Ensure caddy log file exists
-  ansible.builtin.copy:
-    content: ""
-    dest: "/home/{{ ansible_user }}/caddy/config/logs/access.log"
-    force: no
-    mode: '0644'
   tags:
     - setup
 

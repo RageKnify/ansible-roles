@@ -12,4 +12,10 @@
 	file_server
 }
 
+r.{{ common_name }} {
+	root * /static/.r
+
+	file_server
+}
+
 import /config/conf.d/*
