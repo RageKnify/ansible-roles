@@ -10,7 +10,7 @@
 
 - name: Create diun directories
   ansible.builtin.file:
-    path: "/home/{{ ansible_user }}/diun/data"
+    path: "/home/{{ ansible_user }}/data/diun"
     state: directory
   tags:
     - setup
@@ -23,7 +23,7 @@
     # user: 1000:1000
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/{{ ansible_user }}/diun/data/:/data/
+      - /home/{{ ansible_user }}/data/diun/:/data/
     env:
       TZ: "Europe/Lisbon"
       LOG_LEVEL: "info"

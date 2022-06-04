@@ -11,7 +11,7 @@
 
 - name: Create gotify directories
   ansible.builtin.file:
-    path: "/home/{{ ansible_user }}/gotify/data/{{ item }}"
+    path: "/home/{{ ansible_user }}/data/gotify/{{ item }}"
     state: directory
   loop:
     - images
@@ -26,7 +26,7 @@
     restart_policy: unless-stopped
     user: 1000:1000
     volumes:
-      - /home/{{ ansible_user }}/gotify/data/:/app/data/
+      - /home/{{ ansible_user }}/data/gotify/:/app/data/
     env:
       GOTIFY_SERVER_PORT: "{{ gotify_port }}"
       GOTIFY_DATABASE_DIALECT: sqlite3

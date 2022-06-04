@@ -11,7 +11,7 @@
 
 - name: Create wallabag directories
   ansible.builtin.file:
-    path: "/home/{{ ansible_user }}/wallabag/{{ item }}"
+    path: "/home/{{ ansible_user }}/data/wallabag/{{ item }}"
     state: directory
   loop:
     - data
@@ -25,8 +25,8 @@
     name: wallabag
     restart_policy: unless-stopped
     volumes:
-      - /home/{{ ansible_user }}/wallabag/data/:/var/www/wallabag/data
-      - /home/{{ ansible_user }}/wallabag/images/:/var/www/wallabag/web/assets/images
+      - /home/{{ ansible_user }}/data/wallabag/data/:/var/www/wallabag/data
+      - /home/{{ ansible_user }}/data/wallabag/images/:/var/www/wallabag/web/assets/images
     env:
       SYMFONY__ENV__FOSUSER_REGISTRATION: "false"
       SYMFONY__ENV__DOMAIN_NAME: "https://wallabag.{{ common_name }}"

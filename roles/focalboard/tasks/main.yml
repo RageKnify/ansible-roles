@@ -11,7 +11,7 @@
 
 - name: Create focalboard directories
   ansible.builtin.file:
-    path: /home/{{ ansible_user }}/focalboard/data
+    path: /home/{{ ansible_user }}/data/focalboard
     state: directory
     owner: nobody
     group: nobody
@@ -33,7 +33,7 @@
     restart_policy: unless-stopped
     volumes:
       - /home/{{ ansible_user }}/focalboard/server_config.json/:/opt/focalboard/config.json:ro,Z
-      - /home/{{ ansible_user }}/focalboard/data/:/data/
+      - /home/{{ ansible_user }}/data/focalboard/:/data/
     network_mode: bridge
     networks:
       - name: "{{ proxy_net }}"

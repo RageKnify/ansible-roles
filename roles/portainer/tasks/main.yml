@@ -11,7 +11,7 @@
 
 - name: Create portainer directories
   ansible.builtin.file:
-    path: /home/{{ ansible_user }}/portainer/data
+    path: /home/{{ ansible_user }}/data/portainer
     state: directory
   tags:
     - setup
@@ -23,7 +23,7 @@
     restart_policy: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /home/{{ ansible_user }}/portainer/data/:/data/
+      - /home/{{ ansible_user }}/data/portainer/:/data/
     network_mode: bridge
     networks:
       - name: "{{ proxy_net }}"

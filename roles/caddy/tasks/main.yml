@@ -10,13 +10,13 @@
 
 - name: Create caddy directories
   ansible.builtin.file:
-    path: "/home/{{ ansible_user }}/caddy/{{ item }}"
+    path: "/home/{{ ansible_user }}/{{ item }}"
     state: directory
     mode: '0755'
   loop:
-    - data
-    - config/conf.d
-    - static
+    - data/caddy
+    - caddy/config/conf.d
+    - caddy/static
   tags:
     - setup
 
@@ -48,7 +48,7 @@
       - 443:443
       - "[::]:443:443"
     volumes:
-      - "/home/{{ ansible_user }}/caddy/data:/data"
+      - "/home/{{ ansible_user }}/data/caddy:/data"
       - "/home/{{ ansible_user }}/caddy/config:/config"
       - "/home/{{ ansible_user }}/caddy/static:/static"
     env:
