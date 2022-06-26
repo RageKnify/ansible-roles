@@ -9,13 +9,20 @@
   tags:
     - always
 
-- name: Create focalboard directories
+- name: Create focalboard data directory
   ansible.builtin.file:
     path: /home/{{ ansible_user }}/data/focalboard
     state: directory
     owner: nobody
     group: nobody
   become: yes
+  tags:
+    - setup
+
+- name: Create focalboard config directory
+  ansible.builtin.file:
+    path: /home/{{ ansible_user }}/focalboard
+    state: directory
   tags:
     - setup
 
