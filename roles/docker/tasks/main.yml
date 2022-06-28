@@ -10,6 +10,7 @@
   become: yes
   tags:
     - setup
+  when: ansible_distribution == "Fedora"
 
 - name: Start and Enable docker service
   ansible.builtin.systemd:
@@ -19,3 +20,4 @@
   become: yes
   tags:
     - setup
+  when: ansible_distribution == "Fedora"

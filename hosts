@@ -1,29 +1,26 @@
 [servers]
-headless
+lazarus
 
 [docker]
-headless
+lazarus
 
 [caddy]
-headless
+lazarus
 
 [focalboard]
-headless
+lazarus
 
 [portainer]
-headless
+lazarus
 
 [gotify]
-headless
+lazarus
 
 [diun]
-headless
+lazarus
 
 [wallabag]
-headless
+lazarus
 
 [bot]
-headless
-
-[conduit]
-headless
+lazarus
