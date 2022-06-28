@@ -11,11 +11,12 @@
 
 - name: Create wallabag directories
   ansible.builtin.file:
-    path: "/home/{{ ansible_user }}/data/wallabag/{{ item }}"
+    path: "/home/{{ ansible_user }}/{{ item }}"
     state: directory
   loop:
-    - data
-    - images
+    - data/wallabag/data
+    - data/wallabag/images
+    - wallabag
   tags:
     - setup
 
