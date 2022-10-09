@@ -13,8 +13,6 @@
   ansible.builtin.file:
     path: /home/{{ ansible_user }}/data/focalboard
     state: directory
-    owner: nobody
-    group: nobody
   become: yes
   tags:
     - setup
@@ -35,7 +33,7 @@
 
 - name: Start focalboard container
   community.docker.docker_container:
-    image: mattermost/focalboard:7.0.0
+    image: mattermost/focalboard:latest
     name: focalboard
     restart_policy: unless-stopped
     volumes:
@@ -47,6 +45,7 @@
     security_opts:
       - "label=disable"
     pull: yes
+    user: "1000:100"
   become: yes
   tags:
     - run
