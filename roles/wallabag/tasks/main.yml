@@ -16,7 +16,6 @@
   loop:
     - data/wallabag/data
     - data/wallabag/images
-    - wallabag
   tags:
     - setup
 
@@ -49,5 +48,3 @@
     - run
   notify:
     caddy reload
-
-- import_tasks: backups.yml
